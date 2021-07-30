@@ -135,3 +135,31 @@ resource "aws_route_table_association" "r4" {
   subnet_id      = aws_subnet.pri_sub2.id
   route_table_id = aws_route_table.private_rt.id
 }
+#ELB
+resource "aws_elb" "my_elb" {
+  name               = "my-terraform-elb"
+  availability_zones = ["us-east-1a", "us-east-1b"]
+  listener {
+    instance_port     = 8000
+    instance_protocol = "http"
+    lb_port           = 80
+    lb_protocol       = "http"
+  }
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "HTTP:8000/"
+    interval            = 30
+  }
+  tags = {
+    Name = "terraform-elb"
+  }
+}
+resource "aws_route53_record" "www" {
+  zone_id = aws_elb.my_elb.zone_id
+  name    = "www.example.com"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [aws_elb.my_elb.dns_name]
+}
