@@ -90,13 +90,14 @@ resource "aws_security_group" "sg1" {
     Name = "Allow SSH"
   }
 }
+#Public Route Table
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.myvpc.id
   tags = {
     "Name" = "Public_RT"
   }
 }
-# Route Table Private
+# Private Route Table 
 resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.myvpc.id
   tags = {
@@ -165,9 +166,11 @@ resource "aws_elb" "my_elb" {
     Name = "terraform-elb"
   }
 }
+#Route 53 Hosted Zone
 resource "aws_route53_zone" "themashoodkhan" {
   name = "themashoodkhan.co.uk"
 }
+#Route 53 Record
 resource "aws_route53_record" "www" {
   zone_id = aws_route53_zone.themashoodkhan.id
   name    = "www.themashoodkhan.co.uk"
