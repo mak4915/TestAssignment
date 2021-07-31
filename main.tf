@@ -145,6 +145,15 @@ resource "aws_elb" "my_elb" {
     lb_port           = 80
     lb_protocol       = "http"
   }
+
+  listener {
+    instance_port      = 8000
+    instance_protocol  = "http"
+    lb_port            = 443
+    lb_protocol        = "https"
+    ssl_certificate_id = "arn:aws:acm:us-east-1:865351741419:certificate/42bf8fcf-d51b-4305-a86a-b9c3a865d387"
+  }
+
   health_check {
     healthy_threshold   = 2
     unhealthy_threshold = 2
@@ -156,9 +165,12 @@ resource "aws_elb" "my_elb" {
     Name = "terraform-elb"
   }
 }
+resource "aws_route53_zone" "themashoodkhan" {
+  name = "themashoodkhan.co.uk"
+}
 resource "aws_route53_record" "www" {
-  zone_id = aws_elb.my_elb.zone_id
-  name    = "www.example.com"
+  zone_id = aws_route53_zone.themashoodkhan.id
+  name    = "www.themashoodkhan.co.uk"
   type    = "CNAME"
   ttl     = "300"
   records = [aws_elb.my_elb.dns_name]
