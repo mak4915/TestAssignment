@@ -2,9 +2,4 @@ In Network Skeleton branch there is terraform work which of VPC with two public 
 ELB is listening on ports 80 & 443 and public route53 hosted zone and CNAME entry for the ELB.
 I added the Route53 domain by adding the SSL certificate of my name themashoodkhan.co.uk and I issued by going it to the AWS Certificate manager and then I did some DNS changes by going into the GODADDY.com and then I recieved the Certificate and then I added that certificate in the ELB for 443 port.
 In the Actual Scenario this domain will hit route53 and from route53 it will hit cloudfront and from there on It will go inside the VPC and there elastic load balancer take it to different EC2 instances and auto scalling group will also be there inside the VPC and for storage there will be S3.
-Python files are in the last branch I used Boto3 library which is the AWS SDK for Python (Boto3) to create, configure, and manage AWS services. In main.py there is a code for listing Vpcs in my region and for different regions as well. In S3.py there is code to use S3 using this library. In services.py there is code to list all aws services.AWS services.py has the script creates an EC2 instance from a custom AMI ID and keeps the instance alive for 3 minutes (can be modified as per needs).
-Before creating the EC2 instance, it creates a VPC of CIDR Block - 10.0.0.0/16 & a subnet of 10.0.0.0/24 (Can be modified as per needs).
-It also creates an Internet Gateway and a route table for the Gateway and required route to open the traffic for VPC. It also associates
-the route table for Gateway with the created subnet. After terminating the created instances, it deallocates all the allocated resources
-automatically. The script is crude in the sense, it assumes no exceptions and only serves the required functionalities. The parameters are
-all hardcoded for easy use. It assumes AWS access credentials, AWS CLI configurations and all the required dependencies already present. In script.py there is script to tag different AWS Resources.
+
